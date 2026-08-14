@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="View the verified school master timetable and build a private personal timetable in your browser.">
+<title>School Timetable Studio</title>
+<link rel="stylesheet" href="../shared/portal.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to timetable</a>
+<nav class="portal-nav no-print" aria-label="Student tools">
+<a href="../index.html">Student Tools</a>
+<a href="index.html" aria-current="page">Timetable</a>
+<a href="../deadlines/index.html">Deadlines</a>
+</nav>
+<header class="site-header no-print">
+<div class="brand-block">
+<a class="portal-return" href="../index.html">← Return to Student Tools</a>
+<p class="eyebrow">Semester 2 · 2026</p>
+<h1>School Timetable Studio</h1>
+<p class="header-copy">Explore the complete DP/CP timetable or create a private personal view.</p>
+</div>
+<nav class="view-tabs" aria-label="Main views">
+<button class="tab-button is-active" id="masterTab" type="button" aria-controls="masterView" aria-selected="true">
+Master timetable
+</button>
+<button class="tab-button tab-button-accent" id="builderTab" type="button" aria-controls="builderView" aria-selected="false">
+Build My Timetable
+</button>
+</nav>
+</header>
+<main id="main-content">
+<noscript>
+<div class="status-panel status-error">This timetable needs JavaScript enabled in your browser.</div>
+</noscript>
+<section id="masterView" class="view-section master-view" aria-labelledby="masterHeading">
+<div class="section-heading print-heading">
+<div>
+<p class="eyebrow">Complete schedule</p>
+<h2 id="masterHeading">Master timetable</h2>
+<p>Every verified lesson, grouped by its real start and end time.</p>
+</div>
+<div class="heading-actions no-print">
+<button class="button button-secondary" id="printMasterButton" type="button">Print master timetable</button>
+</div>
+</div>
+<form id="masterFilters" class="filter-panel no-print" aria-label="Master timetable filters">
+<div class="filter-grid">
+<label>
+<span>Programme</span>
+<select id="programmeFilter">
+<option value="ALL">All programmes</option>
+<option value="DP">DP</option>
+<option value="CP">CP</option>
+</select>
+</label>
+<label>
+<span>Cohort</span>
+<select id="cohortFilter"><option value="ALL">All cohorts</option></select>
+</label>
+<label>
+<span>Subject</span>
+<select id="subjectFilter"><option value="ALL">All subjects</option></select>
+</label>
+<label>
+<span>Day</span>
+<select id="dayFilter">
+<option value="ALL">All days</option>
+<option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+<option>Thursday</option><option>Friday</option>
+</select>
+</label>
+<label id="teacherFilterLabel">
+<span>Teacher</span>
+<select id="teacherFilter"><option value="ALL">All verified teachers</option></select>
+</label>
+<label>
+<span>Room</span>
+<select id="roomFilter"><option value="ALL">All rooms</option></select>
+</label>
+</div>
+<div class="filter-footer">
+<p id="masterCount" class="result-count" aria-live="polite"></p>
+<button class="button button-quiet" id="resetFiltersButton" type="button">Reset filters</button>
+</div>
+</form>
+<div id="masterTimetable" class="timetable-shell" aria-live="polite"></div>
+<section class="master-legend" aria-labelledby="legendHeading">
+<div class="legend-heading">
+<div>
+<h3 id="legendHeading">Class-code legend</h3>
+<p>Codes identify class offerings; colour identifies the subject group.</p>
+</div>
+<label class="legend-search no-print">
+<span>Search legend</span>
+<input id="legendSearch" type="search" placeholder="Code, class, teacher or room" autocomplete="off">
+</label>
+</div>
+<div id="subjectGroupLegend" class="subject-group-legend"></div>
+<div id="classCodeLegend" class="class-code-legend" aria-live="polite"></div>
+</section>
+<p class="print-note">Please check school communications for any later timetable changes.</p>
+</section>
+<dialog id="classDetailDialog" class="class-detail-dialog" aria-labelledby="classDetailHeading">
+<div class="dialog-heading">
+<h2 id="classDetailHeading">Class details</h2>
+<button id="closeClassDetail" class="dialog-close" type="button" aria-label="Close class details">×</button>
+</div>
+<div id="classDetailContent"></div>
+</dialog>
+<section id="builderView" class="view-section" aria-labelledby="builderHeading" hidden>
+<div class="section-heading">
+<div>
+<p class="eyebrow">Private browser tool</p>
+<h2 id="builderHeading">Build my timetable</h2>
+<p>Your name and choices stay only on this page and disappear when it is refreshed.</p>
+</div>
+</div>
+<form id="studentBuilder" class="builder-card">
+<div class="builder-step">
+<div class="step-number" aria-hidden="true">1</div>
+<div class="step-content">
+<h3>Choose programme and cohort</h3>
+<div class="two-column-fields">
+<label>
+<span>Programme</span>
+<select id="studentProgramme" required>
+<option value="">Select programme</option>
+<option value="DP">Diploma Programme (DP)</option>
+<option value="CP">Career-related Programme (CP)</option>
+</select>
+</label>
+<label>
+<span>Cohort</span>
+<select id="studentCohort" required disabled>
+<option value="">Select cohort</option>
+</select>
+</label>
+</div>
+</div>
+</div>
+<div class="builder-step" id="subjectStep" hidden>
+<div class="step-number" aria-hidden="true">2</div>
+<div class="step-content">
+<h3>Select subjects</h3>
+<p class="step-help">Choose as many subjects as needed. HL and SL are not selected separately; every fixed lesson for the subject is included automatically.</p>
+<div id="requiredSummary" class="required-summary"></div>
+<label class="name-field" for="subjectSearch">
+<span>Search subjects</span>
+<input id="subjectSearch" type="search" placeholder="Search available subjects">
+</label>
+<div id="subjectChoices" class="subject-groups"></div>
+</div>
+</div>
+<div class="builder-step" id="nameStep" hidden>
+<div class="step-number" aria-hidden="true">3</div>
+<div class="step-content">
+<h3>Add your name</h3>
+<label class="name-field">
+<span>Student name</span>
+<input id="studentName" type="text" maxlength="100" autocomplete="off" placeholder="Enter your name" required>
+</label>
+<p class="privacy-note">Your selections are not uploaded or added to the timetable data.</p>
+</div>
+</div>
+<div class="builder-actions" id="builderActions" hidden>
+<button class="button button-primary" type="submit">Generate my timetable</button>
+<button class="button button-quiet" id="clearBuilderButton" type="button">Clear selections</button>
+</div>
+</form>
+</section>
+<section id="personalView" class="view-section personal-view" aria-labelledby="personalHeading" hidden>
+<div class="section-heading personal-title-block">
+<div>
+<p class="eyebrow">Personal timetable</p>
+<h2 id="personalHeading"><span id="personalName"></span></h2>
+<p id="personalMeta"></p>
+<p id="generatedDate" class="generated-date"></p>
+</div>
+<div class="heading-actions no-print">
+<button class="button button-secondary" id="editSelectionsButton" type="button">Edit selections</button>
+<button class="button button-primary" id="printPersonalButton" type="button">Print / Save as PDF</button>
+<button class="button button-quiet" id="clearTimetableButton" type="button">Clear timetable</button>
+<button class="button button-quiet" id="returnMasterButton" type="button">Return to master timetable</button>
+</div>
+</div>
+<div class="selected-subjects-block">
+<h3>Selected subjects</h3>
+<p id="personalSubjects"></p>
+</div>
+<div id="personalWarnings" class="warning-list" aria-live="assertive"></div>
+<div id="personalTimetable" class="timetable-shell"></div>
+<p class="print-note">Please check school communications for any later timetable changes.</p>
+</section>
+<section id="loadError" class="view-section" hidden>
+<div class="status-panel status-error">
+<h2>Timetable unavailable</h2>
+<p>The generated timetable data could not be loaded. Run the build script and refresh this page.</p>
+</div>
+</section>
+</main>
+<footer class="site-footer no-print">
+<p>Static timetable viewer · No accounts, tracking or stored personal data</p>
+</footer>
+<script src="timetable-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
