@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My DP/CP Deadline Planner 2026</title>
+<link rel="stylesheet" href="../shared/portal.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="portal-nav" aria-label="Student tools">
+  <a href="../index.html">Student Tools</a>
+  <a href="../timetable/index.html">Timetable</a>
+  <a href="index.html" aria-current="page">Deadlines</a>
+</nav>
+<div class="app">
+<section class="hero"><a class="portal-return" href="../index.html">← Return to Student Tools</a><p class="eyebrow">2026 · Student planning</p><h1>DP/CP Student Deadline Planner</h1><p>Build a personal calendar from official deadlines, then add private planning cards in this browser.</p></section>
+
+<section id="setup" class="setup">
+  <h2>Build my deadline calendar</h2>
+
+  <div class="step">
+    <div class="step-number" aria-hidden="true">1</div>
+    <div class="step-content">
+      <h3>Choose programme and cohort</h3>
+      <div class="two-column-fields">
+        <label class="field" for="programmeSelect"><span>Programme</span><select id="programmeSelect" required><option value="">Select programme</option><option value="DP">Diploma Programme (DP)</option><option value="CP">Career-related Programme (CP)</option></select></label>
+        <label class="field" for="cohortSelect"><span>Cohort</span><select id="cohortSelect" required disabled><option value="">Select cohort</option></select></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="step" id="subjectStep" hidden>
+    <div class="step-number" aria-hidden="true">2</div>
+    <div class="step-content">
+      <h3>Select subjects</h3>
+      <p class="notice">Choose every academic subject whose official deadlines you want to see. CP students select their academic courses from the same DP subject offerings.</p>
+      <div id="requiredSummary" class="required-summary"></div>
+      <label class="field" for="subjectSearch"><span>Search subjects</span><input id="subjectSearch" type="search" placeholder="Search available subjects"></label>
+      <div id="subjects" class="subject-groups"></div>
+    </div>
+  </div>
+
+  <div class="builder-actions" id="builderActions" hidden>
+    <button id="buildBtn" class="primary">Generate my deadline calendar</button>
+    <button id="clearBtn">Clear selections</button>
+  </div>
+  <p class="privacy-note" style="padding:0 1.25rem 1rem">Your selections and personal cards are stored only in this browser. They are not uploaded or visible to the school.</p>
+</section>
+
+<section id="planner" class="planner">
+  <div class="planner-heading">
+    <div><p class="eyebrow">Personal deadline calendar</p><h2>My deadline calendar</h2><p id="plannerMeta"></p></div>
+    <div class="row">
+      <button id="editSelections">Edit selections</button>
+      <button id="clearGenerated">Clear calendar</button>
+      <div class="print-wrap"><button id="printBtn" class="primary">Print / Save as PDF</button><div id="printOptions" class="print-options"><button id="printCurrent">Print current month</button><button id="printAll">Print all months</button></div></div>
+    </div>
+  </div>
+  <div id="summary" class="selected-summary"></div>
+  <section class="toolbar">
+    <div class="row">
+      <select id="monthJump"><option value="">Jump to month</option></select>
+      <button id="addCard" class="primary">Add personal card</button>
+    </div>
+    <div class="notice privacy-note">Your selections and personal cards are stored only in this browser. They are not uploaded or visible to the school.</div>
+  </section>
+
+  <div class="tabs"><button id="calTab" class="primary">Calendar</button><button id="listTab">List</button></div>
+  <div class="legend"><span><i class="dot window"></i>Assessment window</span><span><i class="dot personal"></i>Personal card</span></div>
+
+  <div id="calendar"></div>
+  <div id="list" class="list"></div>
+</section>
+</div>
+
+<div id="cardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <h2 id="modalTitle">Add personal card</h2>
+    <div class="form-grid">
+      <label>Date<input id="cardDate" type="date" min="2026-01-01" max="2026-12-31"></label>
+      <label>Title<input id="cardTitle" maxlength="80" placeholder="e.g. English B oral practice"></label>
+      <label>Optional note<textarea id="cardNote" rows="3" maxlength="180"></textarea></label>
+      <label>Optional subject label<input id="cardSubject" maxlength="50"></label>
+      <label>Colour<select id="cardColor">
+        <option value="#fff4d6">Yellow</option><option value="#e5f3f1">Green</option>
+        <option value="#e9eef8">Blue</option><option value="#f9ecec">Pink</option>
+        <option value="#f1e8f6">Purple</option>
+      </select></label>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <button id="saveCard" class="primary">Save card</button>
+      <button id="cancelCard">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="deadline-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
