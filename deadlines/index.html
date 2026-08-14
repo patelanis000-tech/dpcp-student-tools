@@ -6,6 +6,9 @@
 <title>My DP/CP Deadline Planner 2026</title>
 <link rel="stylesheet" href="../shared/portal.css">
 <link rel="stylesheet" href="styles.css">
+<style>
+.required-summary p{margin:.25rem 0 .65rem;color:var(--muted);font-size:.82rem}.shared-toggle-row{display:flex;flex-wrap:wrap;gap:.5rem}.shared-toggle{position:relative;cursor:pointer}.shared-toggle input{position:absolute;opacity:0;pointer-events:none}.shared-toggle span{display:inline-block;padding:.48rem .75rem;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--navy2);font-size:.82rem;font-weight:800;transition:.15s ease}.shared-toggle:hover span{border-color:var(--navy)}.shared-toggle input:checked+span{background:var(--navy);border-color:var(--navy);color:#fff}.shared-toggle input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+</style>
 </head>
 <body>
 <nav class="portal-nav" aria-label="Student tools">
@@ -14,7 +17,7 @@
   <a href="index.html" aria-current="page">Deadlines</a>
 </nav>
 <div class="app">
-<section class="hero"><a class="portal-return" href="../index.html">← Return to Student Tools</a><p class="eyebrow">2026 · Student planning</p><h1>DP/CP Student Deadline Planner</h1><p>Build a personal calendar from official deadlines, then add private planning cards in this browser.</p></section>
+<section class="hero"><a class="portal-return" href="../index.html">← Return to Student Tools</a><p class="eyebrow">2026 · Deadline planning</p><h1>DP/CP Deadline Planner</h1><p>Build a focused calendar from official deadlines. Students can combine subjects and core components; teachers can select only the subjects they need.</p></section>
 
 <section id="setup" class="setup">
   <h2>Build my deadline calendar</h2>
@@ -33,8 +36,8 @@
   <div class="step" id="subjectStep" hidden>
     <div class="step-number" aria-hidden="true">2</div>
     <div class="step-content">
-      <h3>Select subjects</h3>
-      <p class="notice">Choose every academic subject whose official deadlines you want to see. CP students select their academic courses from the same DP subject offerings.</p>
+      <h3>Choose what to include</h3>
+      <p class="notice">Toggle core/shared components on or off, then choose any academic subjects whose official deadlines you want to see. Teachers can simply select their subject.</p>
       <div id="requiredSummary" class="required-summary"></div>
       <label class="field" for="subjectSearch"><span>Search subjects</span><input id="subjectSearch" type="search" placeholder="Search available subjects"></label>
       <div id="subjects" class="subject-groups"></div>
