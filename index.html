@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Private browser-based timetable and deadline tools for DP and CP students.">
+  <title>DP/CP Student Tools</title>
+  <link rel="stylesheet" href="shared/portal.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--portal-ink); background: var(--portal-page); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; padding-bottom: 2rem; }
+    .landing-hero { margin: 0 calc(50% - 50vw) 1.5rem; padding: 2.4rem max(1rem, calc((100vw - 1120px) / 2)); color: #fff; background: linear-gradient(125deg, var(--portal-navy), var(--portal-blue)); border-bottom: 5px solid var(--portal-coral); }
+    .eyebrow { margin: 0 0 0.4rem; color: var(--portal-coral); font-size: 0.78rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.35rem); line-height: 1.08; }
+    .hero-copy { max-width: 680px; margin: 0.75rem 0 0; color: #e7eef7; font-size: 1.05rem; }
+    .tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .tool-card { display: flex; flex-direction: column; min-height: 260px; padding: 1.45rem; color: inherit; background: var(--portal-surface); border: 1px solid var(--portal-line); border-top: 6px solid var(--portal-coral); border-radius: 14px; box-shadow: var(--portal-shadow); text-decoration: none; }
+    .tool-card:last-child { border-top-color: var(--portal-gold); }
+    .tool-card h2 { margin: 0.35rem 0 0.55rem; color: var(--portal-navy); font-size: clamp(1.45rem, 3vw, 2rem); }
+    .tool-card p { margin: 0; color: var(--portal-muted); }
+    .tool-card .action { margin-top: auto; padding-top: 1.5rem; color: var(--portal-blue); font-weight: 900; }
+    .tool-card:hover { transform: translateY(-2px); border-color: var(--portal-blue); }
+    .portal-info { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-top: 1rem; }
+    .info-card { padding: 1rem 1.15rem; background: #fff; border: 1px solid var(--portal-line); border-radius: 12px; }
+    .info-card h2 { margin: 0 0 0.3rem; color: var(--portal-navy); font-size: 1rem; }
+    .info-card p { margin: 0; color: var(--portal-muted); }
+    .report-link { color: var(--portal-blue); font-weight: 800; }
+    footer { padding: 1.2rem; color: var(--portal-muted); text-align: center; }
+    @media (max-width: 720px) { .tool-grid, .portal-info { grid-template-columns: 1fr; } .tool-card { min-height: 210px; } }
+    @media print { .portal-nav, footer { display: none; } .tool-card { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <nav class="portal-nav" aria-label="Student tools">
+    <a href="index.html" aria-current="page">Student Tools</a>
+    <a href="timetable/index.html">Timetable</a>
+    <a href="deadlines/index.html">Deadlines</a>
+  </nav>
+  <main>
+    <header class="landing-hero">
+      <p class="eyebrow">Sunway student portal</p>
+      <h1>DP/CP Student Tools</h1>
+      <p class="hero-copy">Build a personal timetable or review your official 2026 deadlines using private browser-based tools.</p>
+    </header>
+    <section class="tool-grid" aria-label="Available student tools">
+      <a class="tool-card" href="timetable/index.html">
+        <p class="eyebrow">Schedule</p><h2>Build My Timetable</h2>
+        <p>Select your programme, cohort and subjects to create a personal timetable from the verified master schedule.</p>
+        <span class="action">Open Timetable Studio →</span>
+      </a>
+      <a class="tool-card" href="deadlines/index.html">
+        <p class="eyebrow">Planning</p><h2>Build My Deadline Calendar</h2>
+        <p>Choose your subjects and programme components to see official 2026 deadlines and add private planning cards.</p>
+        <span class="action">Open Deadline Planner →</span>
+      </a>
+    </section>
+    <section class="portal-info">
+      <div class="info-card"><h2>Privacy</h2><p>Your timetable name and selections are not uploaded. Deadline selections and personal cards stay only in this browser.</p></div>
+      <div class="info-card"><h2>Last updated</h2><p>5 August 2026</p></div>
+      <div class="info-card"><h2>Something looks incorrect?</h2><p><a class="report-link" href="mailto:?subject=Report%20incorrect%20student%20timetable%20or%20deadline%20information">Report incorrect timetable or deadline information</a> using your normal school email.</p></div>
+    </section>
+  </main>
+  <footer>DP/CP Student Tools · Static site · No accounts or tracking</footer>
+</body>
+</html>
