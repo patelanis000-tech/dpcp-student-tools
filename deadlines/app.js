@@ -47,7 +47,7 @@ function renderShared(){
   $("requiredSummary").innerHTML=options.length?`<strong>Core and shared deadlines</strong><p>Toggle these on or off. Teachers can leave them off and select only the subject they teach.</p><div class="shared-toggle-row">${options.map(([label,key])=>`<label class="shared-toggle"><input type="checkbox" value="${escapeHtml(key)}" ${state.shared.includes(key)?"checked":""}><span>${escapeHtml(label)}</span></label>`).join("")}</div>`:"<strong>Core and shared deadlines</strong><p>No confirmed shared components are currently recorded.</p>";
   $("requiredSummary").querySelectorAll("input").forEach(i=>i.onchange=()=>{state.shared=i.checked?[...new Set([...state.shared,i.value])]:state.shared.filter(x=>x!==i.value);saveState()});
 }
-$("programmeSelect").onchange=()=>{state.programme=$("programmeSelect").value;state.cohort="";state.subjects=[];state.shared=(sharedOptions[state.programme]||[]).map(([,key])=>key);updateCohorts()};
+$("programmeSelect").onchange=()=>{state.programme=$("programmeSelect").value;state.cohort="";state.subjects=[];state.shared=[];updateCohorts()};
 $("cohortSelect").onchange=()=>{state.cohort=$("cohortSelect").value;saveState();updateBuilderVisibility();renderSubjects();renderShared()};
 $("subjectSearch").oninput=renderSubjects;
 
