@@ -6,17 +6,17 @@ const subjectGroups={"Studies in Language and Literature":["Chinese A: Language 
 const cohortOptions={DP:[["YEAR_1","Year 1 (Batch 2027)"],["YEAR_2","Year 2 (Batch 2026)"]],CP:[["YEAR_1","Year 1 (Batch 2027)"],["YEAR_2","Year 2 (Batch 2026)"]]};
 const sharedOptions={
   DP:[
-    ["Theory of Knowledge","Theory of Knowledge"],
+    ["TOK","Theory of Knowledge"],
     ["Extended Essay","Extended Essay"],
     ["CAS","CAS"],
-    ["Examinations and study periods","Examinations and study periods"]
+    ["Exams & study periods","Examinations and study periods"]
   ],
   CP:[
     ["Reflective Project","Reflective Project"],
     ["Community Engagement / Service Learning","Community Engagement / Service Learning"],
     ["Personal and Professional Skills","Personal and Professional Skills (PPS)"],
     ["Language Development","Language Development"],
-    ["Examinations and study periods","Examinations and study periods"]
+    ["Exams & study periods","Examinations and study periods"]
   ]
 };
 const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -40,12 +40,14 @@ function renderSubjects(){
   const list=(programmeSubjects[state.programme]||[]).filter(s=>s.toLowerCase().includes(q));
   if(!list.length){$("subjects").innerHTML='<p class="empty-options">No subjects match this search.</p>';return}
   $("subjects").innerHTML=Object.entries(subjectGroups).map(([group,subjects])=>[group,subjects.filter(subject=>list.includes(subject))]).filter(([,subjects])=>subjects.length).map(([group,subjects])=>`<details class="subject-dropdown" open><summary><span>${group}</span><span class="selection-count">${subjects.filter(subject=>state.subjects.includes(subject)).length} selected</span></summary><div class="dropdown-options">${subjects.map(subject=>`<label class="subject-choice"><input type="checkbox" value="${escapeHtml(subject)}" ${state.subjects.includes(subject)?"checked":""}><span><span class="choice-title">${escapeHtml(subject)}</span><span class="choice-detail">${subjectHasDeadlines(subject)?"Official 2026 deadlines available":"No verified 2026 deadlines currently recorded"}</span></span></label>`).join("")}</div></details>`).join("");
-  $("subjects").querySelectorAll("input").forEach(i=>i.onchange=()=>{state.subjects=i.checked?[...new Set([...state.subjects,i.value])]:state.subjects.filter(x=>x!==i.value);saveState()});
+  $("subjects").querySelectorAll("input").forEach(i=>i.onchange=()=>{state.subjects=i.checked?[...new Set([...state.subjects,i.value])]:state.subjects.filter(x=>x!==i.value);saveState();renderSubjects()});
 }
 function renderShared(){
-  const required=sharedOptions[state.programme]||[];state.shared=required.map(([,key])=>key);$("requiredSummary").innerHTML=required.length?`<strong>Included automatically:</strong> ${required.map(([label])=>escapeHtml(label)).join(", ")}`:"<strong>Included automatically:</strong> No confirmed shared components.";saveState();
+  const options=sharedOptions[state.programme]||[];
+  $("requiredSummary").innerHTML=options.length?`<strong>Core and shared deadlines</strong><p>Toggle these on or off. Teachers can leave them off and select only the subject they teach.</p><div class="shared-toggle-row">${options.map(([label,key])=>`<label class="shared-toggle"><input type="checkbox" value="${escapeHtml(key)}" ${state.shared.includes(key)?"checked":""}><span>${escapeHtml(label)}</span></label>`).join("")}</div>`:"<strong>Core and shared deadlines</strong><p>No confirmed shared components are currently recorded.</p>";
+  $("requiredSummary").querySelectorAll("input").forEach(i=>i.onchange=()=>{state.shared=i.checked?[...new Set([...state.shared,i.value])]:state.shared.filter(x=>x!==i.value);saveState()});
 }
-$("programmeSelect").onchange=()=>{state.programme=$("programmeSelect").value;state.cohort="";state.subjects=[];state.shared=[];updateCohorts()};
+$("programmeSelect").onchange=()=>{state.programme=$("programmeSelect").value;state.cohort="";state.subjects=[];state.shared=(sharedOptions[state.programme]||[]).map(([,key])=>key);updateCohorts()};
 $("cohortSelect").onchange=()=>{state.cohort=$("cohortSelect").value;saveState();updateBuilderVisibility();renderSubjects();renderShared()};
 $("subjectSearch").oninput=renderSubjects;
 
