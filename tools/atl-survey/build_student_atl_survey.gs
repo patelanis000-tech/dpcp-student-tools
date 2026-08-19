@@ -2,20 +2,17 @@
  * DP/CP Student ATL Survey — one-run deployment
  *
  * Creates an anonymous Google Form and linked response spreadsheet,
- * moves both into the authoritative IB Evaluation project Drive folder,
+ * attempts to move both into the authoritative IB Evaluation project Drive folder,
  * and creates an ATL Summary sheet for selecting evidence-based priorities.
  *
- * Before running, set PROJECT_FOLDER_ID to the authoritative project folder ID
- * recorded on the 2027 IB Evaluation Preparation Notion page.
+ * PROJECT_FOLDER_ID is optional. If it is blank, left as the placeholder, or
+ * inaccessible to the Google account running Apps Script, deployment continues
+ * in My Drive and reports that the files need to be moved manually.
  */
 function buildStudentATLSurvey() {
   const PROJECT_FOLDER_ID = 'SET_PROJECT_FOLDER_ID';
   const FORM_TITLE = 'DP/CP Student ATL Survey — 2026';
   const SHEET_TITLE = 'DP-CP Student ATL Survey Responses — 2026';
-
-  if (PROJECT_FOLDER_ID === 'SET_PROJECT_FOLDER_ID') {
-    throw new Error('Set PROJECT_FOLDER_ID before running this deployment.');
-  }
 
   const categories = [
     'Communication skills',
@@ -33,7 +30,20 @@ function buildStudentATLSurvey() {
     'Thinking skills — analysing, evaluating, making connections, solving problems, generating ideas and reflecting on how you think.'
   ];
 
-  const folder = DriveApp.getFolderById(PROJECT_FOLDER_ID);
+  let folder = null;
+  let folderStatus = 'My Drive (project folder not configured)';
+  if (PROJECT_FOLDER_ID && PROJECT_FOLDER_ID !== 'SET_PROJECT_FOLDER_ID') {
+    try {
+      folder = DriveApp.getFolderById(PROJECT_FOLDER_ID);
+      folder.getName(); // forces an access check now
+      folderStatus = 'Project folder: ' + folder.getName();
+    } catch (err) {
+      folder = null;
+      folderStatus = 'My Drive (project folder inaccessible to this Google account)';
+      console.warn('Project folder could not be accessed. Deployment will continue in My Drive. ' + err.message);
+    }
+  }
+
   const form = FormApp.create(FORM_TITLE, true);
   form
     .setDescription(
@@ -157,14 +167,21 @@ function buildStudentATLSurvey() {
   summary.getRange('A4:F4').setFontWeight('bold');
   summary.getRange('A11').setFontWeight('bold');
 
-  DriveApp.getFileById(form.getId()).moveTo(folder);
-  DriveApp.getFileById(ss.getId()).moveTo(folder);
+  if (folder) {
+    try {
+      DriveApp.getFileById(form.getId()).moveTo(folder);
+      DriveApp.getFileById(ss.getId()).moveTo(folder);
+    } catch (err) {
+      folderStatus = 'My Drive (created successfully, but automatic move failed)';
+      console.warn('Survey files were created but could not be moved automatically. ' + err.message);
+    }
+  }
 
   const result = {
     formEditUrl: form.getEditUrl(),
     studentFormUrl: form.getPublishedUrl(),
     responseSheetUrl: ss.getUrl(),
-    projectFolderId: PROJECT_FOLDER_ID
+    fileLocation: folderStatus
   };
 
   Logger.log(JSON.stringify(result, null, 2));
