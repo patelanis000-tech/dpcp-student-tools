@@ -1,9 +1,10 @@
 # DP/CP Student Tools
 
-A framework-free static portal containing two separate applications:
+A framework-free static portal containing three separate applications:
 
 - `/` — student tools landing page
 - `/timetable/` — School Timetable Studio
+- `/mock-exams/` — Personal Mock Examination Timetable, September 2026
 - `/deadlines/` — DP/CP Student Deadline Planner 2026
 
 No backend, database, account system, analytics or in-page authentication is included. Cloudflare Access can be configured later outside this codebase.
@@ -58,6 +59,7 @@ npx wrangler pages deploy student-tools
 ## Privacy and storage
 
 - Timetable names and selections stay on the current page and are not persisted.
+- Mock-exam subject selections stay in the current browser using `dpcpMockSubjectsSep2026`.
 - Deadline selections use `dpPlanner2026State` in `localStorage`.
 - Personal deadline cards use the separate `dpPersonalCards2026` key.
 - Official timetable and deadline datasets contain no personal student records.
@@ -75,6 +77,11 @@ npx wrangler pages deploy student-tools
 - Check the master timetable, filters, room filter and class-detail dialog.
 - Generate DP and CP personal timetables and print each view.
 - Confirm subject search, required components and chronological ordering.
+
+### Mock examinations
+
+- Select representative SL and HL subject combinations and confirm all papers appear in chronological order.
+- Confirm morning and afternoon sections, room exceptions, overlap warnings and print layout.
 
 ### Deadlines
 

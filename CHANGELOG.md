@@ -1,3 +1,9 @@
+## 8 September 2026
+
+- Added the Personal Mock Timetable for the approved 21–30 September schedule.
+- Added subject-and-level selection, local browser saving, overlap warnings, morning/afternoon grouping and print/PDF output.
+- Added Mock Exams navigation across the student portal.
+
 # Changelog
 
 ## 2026-08-05
