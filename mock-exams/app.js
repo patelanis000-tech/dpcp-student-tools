@@ -3,6 +3,10 @@
 
   const STORAGE_KEY = "dpcpMockSubjectsSep2026";
   const GROUPS = ["Sciences", "Individuals and societies", "Languages", "Mathematics"];
+  const WEEKS = [
+    { label: "Week 1", dates: ["2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-25"] },
+    { label: "Week 2", dates: ["2026-09-28", "2026-09-29", "2026-09-30"] }
+  ];
 
   const courses = [
     { id: "bio-hl", group: "Sciences", name: "Biology", level: "HL", exams: [
@@ -154,6 +158,13 @@
     }).format(new Date(`${isoDate}T12:00:00Z`));
   }
 
+  function boardDateLabel(isoDate) {
+    const date = new Date(`${isoDate}T12:00:00Z`);
+    const weekday = new Intl.DateTimeFormat("en-GB", { weekday: "short", timeZone: "UTC" }).format(date);
+    const dayMonth = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).format(date);
+    return `<span>${weekday}</span><strong>${dayMonth}</strong>`;
+  }
+
   function selectedExams() {
     return courses.filter(course => selected.has(course.id)).flatMap(course => course.exams.map(exam => ({
       date: exam[0], start: exam[1], duration: exam[2], paper: exam[3], room: exam[4],
@@ -177,14 +188,30 @@
     return conflicts;
   }
 
-  function renderSession(exams, label, className) {
-    if (!exams.length) return "";
-    return `<div class="session-label ${className}">${label}</div><div class="exam-list">${exams.map(exam => `
-      <article class="exam-card">
-        <div class="exam-time">${exam.start}</div>
-        <div><div class="exam-title">${escapeHtml(exam.title)}</div><div class="exam-meta">${durationLabel(exam.duration)}</div></div>
-        <div class="exam-room">${escapeHtml(exam.room)}</div>
+  function renderExamCards(exams, className) {
+    if (!exams.length) return '<p class="no-exam">You have no examination scheduled this session.</p>';
+    return `<div class="exam-list">${exams.map(exam => `
+      <article class="exam-card ${className}">
+        <div class="exam-card-topline">
+          <time class="exam-time" datetime="${exam.date}T${exam.start}">${exam.start}</time>
+          <span class="exam-room" aria-label="Location: ${escapeHtml(exam.room)}">${escapeHtml(exam.room)}</span>
+        </div>
+        <div class="exam-subject">${escapeHtml(exam.course)} <span>${exam.level}</span></div>
+        <div class="exam-paper">${escapeHtml(exam.paper)}</div>
+        <div class="exam-duration">${durationLabel(exam.duration)}</div>
       </article>`).join("")}</div>`;
+  }
+
+  function examsForSession(exams, date, className) {
+    return exams.filter(exam => exam.date === date && (className === "morning" ? toMinutes(exam.start) < 720 : toMinutes(exam.start) >= 720));
+  }
+
+  function renderMobileDay(exams, date) {
+    return `<section class="mobile-day" aria-label="${dateLabel(date)}">
+      <h4 class="day-heading">${boardDateLabel(date)}</h4>
+      <div class="mobile-session"><div class="session-label morning">Morning</div>${renderExamCards(examsForSession(exams, date, "morning"), "morning")}</div>
+      <div class="mobile-session"><div class="session-label afternoon">Afternoon</div>${renderExamCards(examsForSession(exams, date, "afternoon"), "afternoon")}</div>
+    </section>`;
   }
 
   function renderSchedule() {
@@ -204,13 +231,17 @@
     const conflicts = findConflicts(exams);
     conflictRoot.innerHTML = conflicts.length ? `<div class="conflict-warning"><strong>Check your subject selections</strong>${conflicts.map(([a, b]) => `${dateLabel(a.date)}: ${escapeHtml(a.course)} ${a.level} overlaps with ${escapeHtml(b.course)} ${b.level}.`).join("<br>")}</div>` : "";
 
-    const dates = [...new Set(exams.map(exam => exam.date))];
-    scheduleRoot.innerHTML = dates.map(date => {
-      const dayExams = exams.filter(exam => exam.date === date);
-      const morning = dayExams.filter(exam => toMinutes(exam.start) < 720);
-      const afternoon = dayExams.filter(exam => toMinutes(exam.start) >= 720);
-      return `<section class="exam-day"><h3>${dateLabel(date)}</h3>${renderSession(morning, "Morning examinations", "morning")}${renderSession(afternoon, "Afternoon examinations", "afternoon")}</section>`;
-    }).join("");
+    scheduleRoot.innerHTML = WEEKS.map(week => `<section class="exam-week" aria-label="${week.label}">
+      <h3 class="week-title">${week.label}</h3>
+      <div class="week-board desktop-board">
+        ${week.dates.map(date => `<h4 class="day-heading" aria-label="${dateLabel(date)}">${boardDateLabel(date)}</h4>`).join("")}
+        <div class="session-row-label morning">Morning</div>
+        ${week.dates.map(date => `<section class="session-cell morning" aria-label="${dateLabel(date)}, morning">${renderExamCards(examsForSession(exams, date, "morning"), "morning")}</section>`).join("")}
+        <div class="session-row-label afternoon">Afternoon</div>
+        ${week.dates.map(date => `<section class="session-cell afternoon" aria-label="${dateLabel(date)}, afternoon">${renderExamCards(examsForSession(exams, date, "afternoon"), "afternoon")}</section>`).join("")}
+      </div>
+      <div class="mobile-board">${week.dates.map(date => renderMobileDay(exams, date)).join("")}</div>
+    </section>`).join("");
   }
 
   groupRoot.addEventListener("change", event => {
