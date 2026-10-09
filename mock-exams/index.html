@@ -3,68 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Select your DP subjects and build a personal September 2026 mock examination timetable.">
-  <title>Personal Mock Timetable · DP/CP Student Tools</title>
+  <meta name="robots" content="noindex">
+  <title>Mock examination schedule removed · DP/CP Student Tools</title>
   <link rel="stylesheet" href="../shared/portal.css">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--portal-ink); background: var(--portal-page); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { width: min(760px, calc(100% - 2rem)); margin: 3rem auto; padding: clamp(1.5rem, 4vw, 3rem); background: var(--portal-surface); border: 1px solid var(--portal-line); border-top: 6px solid var(--portal-gold); border-radius: 14px; box-shadow: var(--portal-shadow); }
+    h1 { margin: 0 0 1rem; color: var(--portal-navy); font-size: clamp(1.65rem, 4vw, 2.5rem); line-height: 1.2; }
+    p { color: var(--portal-muted); }
+    .action { display: inline-block; margin-top: 1rem; padding: .85rem 1.1rem; color: #fff; background: var(--portal-blue); border-radius: 7px; font-weight: 800; text-decoration: none; }
+    .action:focus-visible { outline: 3px solid var(--portal-focus); outline-offset: 4px; }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#builder">Skip to subject selection</a>
-  <nav class="portal-nav no-print" aria-label="Student tools">
+  <nav class="portal-nav" aria-label="Student tools">
     <a href="../index.html">Student Tools</a>
     <a href="../timetable/index.html">Timetable</a>
-    <a href="../mock-exams/index.html" aria-current="page">Mock Exams</a>
+    <a href="../exam-rules/november-2026/">Exam Rules</a>
     <a href="../deadlines/index.html">Deadlines</a>
   </nav>
-
-  <header class="hero no-print">
-    <div class="hero-inner">
-      <a class="portal-return" href="../index.html">← Return to Student Tools</a>
-      <p class="eyebrow">21–30 September 2026</p>
-      <h1>Build your personal mock timetable</h1>
-      <p>Select your subjects and levels. Your examinations will appear on a clear two-week schedule.</p>
-    </div>
-  </header>
-
   <main>
-    <aside class="arrival-note" aria-label="Arrival reminder">
-      <strong>Please arrive 10 minutes before the start time</strong>
-      <span>to ensure you are seated and ready before the examination begins.</span>
-    </aside>
-
-    <section class="builder" id="builder" aria-labelledby="builder-title">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Your subjects</p>
-          <h2 id="builder-title">What are you taking?</h2>
-        </div>
-        <div class="selection-summary" aria-live="polite"><strong id="selection-count">0</strong> selected</div>
-      </div>
-      <p class="builder-help">Choose the exact level for each subject. Your choices are saved only in this browser.</p>
-      <div id="subject-groups" class="subject-groups"></div>
-      <div class="builder-actions">
-        <button class="button button-primary" id="view-schedule" type="button" disabled>View my timetable</button>
-        <button class="button button-quiet" id="clear-selections" type="button">Clear selections</button>
-      </div>
-    </section>
-
-    <section class="results" id="results" aria-labelledby="results-title">
-      <div class="section-heading result-heading">
-        <div>
-          <p class="eyebrow">Personal mock timetable</p>
-          <h2 id="results-title">Your examinations</h2>
-          <p id="result-summary" class="result-summary">Select at least one subject to build your timetable.</p>
-        </div>
-        <div class="result-actions no-print">
-          <button class="button button-secondary" id="print-schedule" type="button" disabled>Print / Save as PDF</button>
-        </div>
-      </div>
-      <div id="conflict-panel" class="conflict-panel" aria-live="assertive"></div>
-      <div id="schedule" class="schedule" aria-live="polite"></div>
-    </section>
+    <h1>The September mock examination schedule has been removed.</h1>
+    <p>The September 2026 mock examinations have finished. This page no longer displays the old schedule.</p>
+    <p>For the November 2026 examinations, read the examination rules and procedures below and follow the final timetable issued by the school.</p>
+    <a class="action" href="../exam-rules/november-2026/">Open IBDP Exam Rules and Procedures →</a>
+    <p><a class="portal-return" href="../index.html">← Return to Student Tools</a></p>
   </main>
-
-  <footer class="site-footer no-print">Static student tool · No accounts, names or tracking</footer>
-  <script src="app.js"></script>
 </body>
 </html>
