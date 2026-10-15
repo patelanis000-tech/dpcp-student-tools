@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>November 2026 exam timetable</title><link rel="stylesheet" href="../../shared/portal.css"><style>:root {
+  --navy: #17365d;
+  --navy-deep: #102846;
+  --blue: #245f86;
+  --coral: #e78f92;
+  --gold: #f0c75e;
+  --gold-soft: #fff4cf;
+  --ink: #202936;
+  --muted: #5f6b7a;
+  --line: #cbd4df;
+  --page: #f5f7fa;
+  --surface: #fff;
+  --focus: #0a6ed1;
+  --danger: #9b2f2f;
+  --danger-soft: #fff0f0;
+  --shadow: 0 14px 36px rgba(23, 54, 93, .10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--ink); background: var(--page); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.skip-link { position: fixed; z-index: 100; top: .5rem; left: .5rem; padding: .65rem 1rem; color: #fff; background: var(--navy-deep); transform: translateY(-150%); }
+.skip-link:focus { transform: translateY(0); }
+.hero { color: #fff; background: linear-gradient(125deg, var(--navy-deep), var(--blue)); border-bottom: 5px solid var(--coral); }
+.hero-inner, main { width: min(1440px, calc(100% - 2rem)); margin: 0 auto; }
+.hero-inner { padding: 2rem 0 2.2rem; }
+.hero .portal-return { color: #fff; }
+.eyebrow { margin: 0 0 .35rem; color: var(--coral); font-size: .78rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+h1, h2, h3 { color: var(--navy-deep); line-height: 1.15; }
+.hero h1 { max-width: 760px; margin: .3rem 0 .6rem; color: #fff; font-size: clamp(2rem, 5vw, 3.2rem); }
+.hero p:last-child { max-width: 680px; margin: 0; color: #e5edf6; font-size: 1.05rem; }
+main { padding: 1.2rem 0 3rem; }
+.arrival-note { display: flex; gap: .4rem; align-items: baseline; margin-bottom: 1rem; padding: .85rem 1rem; color: #5d4700; background: var(--gold-soft); border: 1px solid #dec46d; border-left: 6px solid var(--gold); border-radius: 10px; }
+.builder, .results { padding: 1.25rem; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.results { margin-top: 1rem; }
+.section-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: end; }
+.section-heading h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); }
+.selection-summary { min-width: 108px; padding: .55rem .75rem; color: var(--navy); background: #eaf1f8; border-radius: 999px; text-align: center; font-weight: 750; }
+.selection-summary strong { font-size: 1.25rem; }
+.builder-help, .result-summary { margin: .45rem 0 1rem; color: var(--muted); }
+.subject-groups { display: grid; gap: 1rem; }
+.subject-group { padding: .9rem; border: 1px solid var(--line); border-radius: 10px; }
+.subject-group h3 { margin: 0 0 .65rem; font-size: 1rem; }
+.subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: .55rem; }
+.subject-choice { position: relative; display: flex; gap: .65rem; align-items: flex-start; min-height: 62px; padding: .75rem; background: #fff; border: 1px solid #b9c4d0; border-radius: 8px; cursor: pointer; }
+.subject-choice:hover { border-color: var(--blue); background: #f4f8fc; }
+.subject-choice:has(input:checked) { background: #eaf1f8; border-color: var(--blue); box-shadow: inset 4px 0 var(--blue); }
+.subject-choice input { width: 1.2rem; height: 1.2rem; flex: 0 0 auto; margin-top: .1rem; accent-color: var(--blue); }
+.choice-name { display: block; color: var(--navy-deep); font-weight: 800; }
+.choice-level { display: block; margin-top: .1rem; color: var(--muted); font-size: .82rem; }
+.builder-actions, .result-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+.builder-actions { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.button { display: inline-flex; justify-content: center; align-items: center; min-height: 44px; padding: .65rem 1rem; border: 1px solid transparent; border-radius: 8px; font: inherit; font-weight: 850; text-decoration: none; cursor: pointer; }
+.button:focus-visible, input:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.button-primary { color: #fff; background: var(--navy); }
+.button-secondary { color: var(--navy); background: #eaf1f8; border-color: #a8b9cb; }
+.button-quiet { color: var(--navy); background: #fff; border-color: var(--line); }
+.button:disabled { opacity: .45; cursor: not-allowed; }
+.result-heading { align-items: start; }
+.conflict-panel { margin-bottom: 1rem; }
+.conflict-warning { padding: .8rem 1rem; color: #782222; background: var(--danger-soft); border: 1px solid #dd8e8e; border-left: 6px solid var(--danger); border-radius: 8px; }
+.conflict-warning strong { display: block; }
+.empty-state { padding: 2.2rem 1rem; color: var(--muted); background: #fafbfd; border: 1px dashed #9eacba; border-radius: 10px; text-align: center; }
+.schedule { display: grid; gap: 1.4rem; }
+.exam-week { min-width: 0; }
+.week-title { margin: 0 0 .55rem; color: var(--navy-deep); font-size: 1.05rem; }
+.week-board { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .55rem; align-items: stretch; }
+.day-heading { display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; margin: 0; padding: .7rem .75rem; color: #fff; background: var(--blue); border-radius: 9px 9px 0 0; font-size: .9rem; }
+.day-heading span { font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.day-heading strong { white-space: nowrap; font-size: 1rem; }
+.session-row-label { grid-column: 1 / -1; padding: .35rem .65rem; color: #5d4700; background: var(--gold-soft); border: 1px solid #ead58d; border-radius: 6px; font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.session-row-label.afternoon { color: var(--navy-deep); background: #eaf1f8; border-color: #c4d3e1; }
+.session-cell { min-width: 0; min-height: 164px; padding: .5rem; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; }
+.session-cell.morning { border-top: 3px solid var(--gold); }
+.session-cell.afternoon { border-top: 3px solid var(--blue); }
+.exam-list { display: grid; gap: .45rem; }
+.exam-card { min-width: 0; padding: .65rem; background: #fff; border: 1px solid #bfc9d5; border-left: 4px solid var(--blue); border-radius: 7px; box-shadow: 0 3px 10px rgba(23, 54, 93, .07); }
+.exam-card.morning { border-left-color: var(--gold); }
+.exam-card-topline { display: flex; justify-content: space-between; gap: .4rem; align-items: center; margin-bottom: .45rem; }
+.exam-time { color: var(--navy-deep); font-size: 1.08rem; font-weight: 900; }
+.exam-room { flex: 0 0 auto; padding: .12rem .38rem; color: var(--navy-deep); background: #edf2f7; border: 1px solid #d3dce6; border-radius: 999px; font-size: .7rem; font-weight: 900; }
+.exam-subject { color: var(--navy-deep); font-size: .84rem; font-weight: 850; line-height: 1.25; }
+.exam-subject span { white-space: nowrap; }
+.exam-paper { margin-top: .14rem; color: var(--ink); font-size: .78rem; line-height: 1.25; }
+.exam-duration { margin-top: .4rem; padding-top: .35rem; color: var(--muted); border-top: 1px solid #e1e6ec; font-size: .75rem; font-weight: 700; }
+.no-exam { margin: 0; padding: .45rem .25rem; color: var(--muted); font-size: .76rem; line-height: 1.35; }
+.mobile-board { display: none; }
+.site-footer { padding: 1.2rem; color: #dfe8f3; background: var(--navy-deep); text-align: center; font-size: .8rem; }
+
+@media (max-width: 720px) {
+  .arrival-note, .section-heading { align-items: flex-start; flex-direction: column; }
+  .selection-summary { min-width: 0; }
+  .desktop-board { display: none; }
+  .mobile-board { display: grid; gap: .7rem; }
+  .mobile-day { overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
+  .mobile-day .day-heading { border-radius: 0; }
+  .mobile-session { padding: .55rem; background: #f8fafc; }
+  .mobile-session + .mobile-session { border-top: 1px solid var(--line); }
+  .session-label { margin: -.55rem -.55rem .55rem; padding: .35rem .55rem; color: #5d4700; background: var(--gold-soft); font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .session-label.afternoon { color: var(--navy-deep); background: #eaf1f8; }
+  .result-actions, .builder-actions { flex-direction: column; }
+  .button { width: 100%; }
+}
+
+@page { size: A4 portrait; margin: 10mm; }
+@media print {
+  body { color: #000; background: #fff; font-size: 10pt; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .no-print, .builder, .site-footer { display: none !important; }
+  main { width: 100%; padding: 0; }
+  .arrival-note { margin-bottom: 4mm; box-shadow: none; }
+  .results { margin: 0; padding: 0; border: 0; box-shadow: none; }
+  .result-heading { margin-bottom: 3mm; }
+  .result-heading h2 { font-size: 18pt; }
+  .schedule { gap: 5mm; }
+  .week-title { margin-bottom: 2mm; }
+  .mobile-board { display: none; }
+  .desktop-board { display: grid; }
+  .week-board { gap: 1.5mm; }
+  .day-heading { padding: 2mm; }
+  .session-row-label { padding: 1mm 2mm; }
+  .session-cell { min-height: 29mm; padding: 1.5mm; }
+  .exam-card { padding: 1.5mm; box-shadow: none; }
+  .exam-time { font-size: 9pt; }
+  .exam-subject, .exam-paper, .exam-duration, .exam-room, .no-exam { font-size: 7pt; }
+}
+
+.publication-note{padding:1rem;border:2px solid #b67800;background:#fff4cf;color:#503800;border-radius:10px;margin-bottom:1rem}
+.pending-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.75rem}
+.exam-card-topline{flex-wrap:wrap}.exam-room{white-space:normal}.exam-week{break-inside:avoid}
+.session-details{margin:.5rem 0;padding-left:1.2rem;font-size:.85rem}.timing-list{margin:.7rem 0 0;font-size:.8rem}.timing-list div{display:flex;gap:.5rem;justify-content:space-between}.timing-list dt{font-weight:700}.timing-list dd{margin:0;text-align:right}
+.review-note{color:#5f6b7a;font-size:.9rem}.hero{break-after:avoid}
+@media print{.hero{display:block!important;color:#000;background:#fff;border:0}.hero h1,.hero p:last-child,.eyebrow{color:#000}.hero-inner{padding:0;width:100%}.hero h1{font-size:18pt}.publication-note{display:block!important}.pending-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.exam-card{break-inside:avoid}.timing-list{font-size:8pt}}
+@media(max-width:720px){.pending-grid{grid-template-columns:1fr}.builder,.results{padding:.8rem}}
+
+.skip-link{clip-path:inset(100%);transform:none}.skip-link:focus{clip-path:none}
+@media print{
+ .skip-link{display:none!important}
+ .desktop-board{display:none!important}.mobile-board{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:3mm}
+ .mobile-day{display:none;break-inside:avoid;border:1px solid #cbd4df;border-radius:2mm;overflow:hidden}
+ .mobile-day:has(.exam-card){display:block}.mobile-session{padding:2mm}.mobile-session:not(:has(.exam-card)){display:none}
+ .exam-week{break-inside:auto}.exam-week:not(:has(.exam-card)){display:none}
+ .day-heading{font-size:9pt}.day-heading strong{font-size:9pt}.session-label{font-size:8pt;padding:1mm 2mm}
+ .exam-card-topline{flex-wrap:nowrap}.exam-subject,.exam-paper,.exam-room{font-size:9pt}.session-details{font-size:9pt;padding-left:4mm;margin:2mm 0}.timing-list{font-size:8pt}.review-note{font-size:8pt}
+ .hero h1{font-size:17pt}.hero p:last-child{font-size:9pt}.hero-inner{padding:0 0 2mm}.publication-note{font-size:9pt;padding:2mm}.arrival-note{font-size:9pt;padding:2mm}.result-heading h2{font-size:15pt}.result-summary{font-size:9pt}.week-title{font-size:10pt}
+}
+@media print{.exam-week{break-inside:avoid}.week-title{break-after:avoid}}
+
+.builder .subject-groups{margin-top:1rem}.publication-note{padding:.5rem 1rem}.session-cell{min-height:100px}.exam-paper{margin-top:.4rem}.exam-room{white-space:nowrap}.result-summary:empty{display:none}.no-exam{color:#8b96a3;text-align:center}.week-title{margin-top:.5rem}
+@media print{.session-cell{min-height:15mm}.exam-week{break-inside:avoid}.hero h1{font-size:18pt}.arrival-note{margin-bottom:3mm}.publication-note{padding:1mm 2mm}.mobile-session{padding:2mm}.session-label{margin:0 0 2mm}.exam-card{padding:2mm}.exam-subject,.exam-paper{font-size:9pt}.exam-paper{margin-top:1mm}}
+
+@media(max-width:560px){.portal-nav{flex-wrap:wrap}.portal-nav a{flex:1 0 28%;}}</style></head>
+<body><nav class="portal-nav no-print" aria-label="Student tools"><a href="../../index.html">Student Tools</a><a href="../../timetable/index.html">Timetable</a><a href="./" aria-current="page">Exam Schedule</a><a href="../../exam-rules/november-2026/">Exam Rules</a><a href="../../deadlines/index.html">Deadlines</a></nav><a class="skip-link" href="#builder">Skip to subject selection</a><header class="hero"><div class="hero-inner"><p class="eyebrow">26 October - 13 November 2026</p><h1>Your exam timetable</h1><p>Choose your subjects and levels.</p></div></header><main>
+
+<aside class="arrival-note">Arrive 15 minutes before your session starts.</aside>
+<section class="builder" id="builder" aria-labelledby="builder-title"><div class="section-heading"><h2 id="builder-title">Your subjects</h2><div class="selection-summary" aria-live="polite"><strong id="selection-count">0</strong> selected</div></div><div id="subject-groups" class="subject-groups"></div><div class="builder-actions"><button class="button button-primary" id="view-schedule" disabled>View my timetable</button><button class="button button-quiet" id="clear-selections">Clear</button></div></section>
+<section class="results" id="results" aria-labelledby="results-title"><div class="section-heading result-heading"><div><h2 id="results-title">Your timetable</h2><p id="result-summary" class="result-summary" aria-live="polite"></p></div><button class="button button-secondary no-print" id="print-schedule" disabled>Print / Save PDF</button></div><div id="conflict-panel" class="conflict-panel" aria-live="assertive"></div><div id="schedule" class="schedule" aria-live="polite"></div></section>
+</main><script src="schedule-data.js"></script><script>(() => {
+  'use strict';
+  const data = window.NOVEMBER_SCHEDULE;
+  const key = 'dpcpNovember2026Subjects';
+  const esc = v => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const minute = t => { if (!/^\d{2}:\d{2}$/.test(t || '')) return null; const [h,m]=t.split(':').map(Number); return h<24&&m<60 ? h*60+m : null; };
+  const time = n => `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;
+  const dateLabel = d => new Intl.DateTimeFormat('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(d+'T12:00:00Z'));
+  const selected = new Set();
+  try { const saved=JSON.parse(localStorage.getItem(key)||'[]'); if(Array.isArray(saved)) saved.forEach(id=>{if(data.courses.some(c=>c.id===id))selected.add(id);}); } catch (_) {}
+  // Old mock selections use a separate key and are never overwritten.
+  function normalizeLevels(){for(const c of data.courses){if(selected.has(c.id))for(const other of data.courses){if(other.name===c.name&&other.id!==c.id)selected.delete(other.id);}}}
+  normalizeLevels();
+  const root = document.querySelector('#subject-groups');
+  const schedule = document.querySelector('#schedule');
+  function choices(){root.innerHTML=[...new Set(data.courses.map(c=>c.group))].map(group=>`<section class="subject-group"><h3>${esc(group)}</h3><div class="subject-grid">${data.courses.filter(c=>c.group===group).map(c=>`<label class="subject-choice"><input type="checkbox" value="${esc(c.id)}" ${selected.has(c.id)?'checked':''}><span><span class="choice-name">${esc(c.name)}</span><span class="choice-level">${esc(c.level)}</span></span></label>`).join('')}</div></section>`).join('');}
+  function validate(){
+    const ids=new Set();
+    for(const c of data.courses){if(ids.has(c.id))throw Error('Duplicate course');ids.add(c.id);}
+    const sittingIds=new Set();const pairs=new Set();
+    for(const s of data.sittings){
+      if(sittingIds.has(s.id))throw Error('Duplicate sitting');sittingIds.add(s.id);
+      if(!ids.has(s.courseId)||!/^\d{4}-\d{2}-\d{2}$/.test(s.date)||!['AM','PM'].includes(s.session)||minute(s.scheduledStart)===null||!Array.isArray(s.papers)||!s.papers.length)throw Error('Unverified or incomplete sitting');
+      const pair=[s.courseId,s.date,s.session].join('|');if(pairs.has(pair))throw Error('Consecutive papers must share one sitting');pairs.add(pair);
+      if(s.papers.some(p=>!p.name||!Number.isFinite(p.writingMinutes)||p.writingMinutes<=0))throw Error('Invalid paper');
+      if(s.timingVerified){
+        if(!s.timingSource||!Array.isArray(s.segments)||!s.segments.length||s.segments.some(p=>!p.label||!Number.isFinite(p.minutes)||p.minutes<0))throw Error('Unverified timing');
+        const writing=s.segments.filter(p=>p.kind==='writing').reduce((n,p)=>n+p.minutes,0);
+        if(writing!==s.papers.reduce((n,p)=>n+p.writingMinutes,0))throw Error('Writing segments mismatch');
+        if(!s.breakRequirementVerified)throw Error('Required break check pending');
+        const total=s.segments.reduce((n,p)=>n+p.minutes,0);
+        if(minute(s.scheduledStart)+total>1439)throw Error('Sitting crosses midnight');
+      }
+      if(s.releaseVerified&&(!s.timingVerified||!s.releaseSource||minute(s.release)===null||minute(s.release)<minute(s.scheduledStart)+Math.max(120,s.segments.reduce((n,p)=>n+p.minutes,0))))throw Error('Invalid release');
+    }
+    return true;
+  }
+  function block(s){return s.timingVerified?s.segments.reduce((n,p)=>n+p.minutes,0):null;}
+  function clock(t){const [h,m]=t.split(':').map(Number);return (h%12||12)+':'+String(m).padStart(2,'0')+' '+(h>=12?'PM':'AM');}
+  function duration(n){const h=Math.floor(n/60),m=n%60;return h?h+'h'+(m?String(m).padStart(2,'0'):''):m+' min';}
+  function card(c,s){
+    return '<article class="exam-card"><div class="exam-card-topline"><strong class="exam-time">'+esc(s?clock(s.scheduledStart):'Time TBC')+'</strong><span class="exam-room">'+esc(s?.location||data.defaultLocation)+'</span></div><div class="exam-subject">'+esc(c.name)+' '+esc(c.level)+'</div><div class="exam-paper">'+(s?s.papers.map(p=>'<div>'+esc(p.name)+' &middot; '+duration(p.writingMinutes)+(s.location==='See paper venues'?' &middot; '+esc(p.location):'')+'</div>').join(''):'Papers TBC')+'</div></article>';
+  }
+  function render(){
+    try {localStorage.setItem(key,JSON.stringify([...selected]));}catch(_){}
+    document.querySelector('#selection-count').textContent=selected.size;
+    ['#view-schedule','#print-schedule'].forEach(id=>document.querySelector(id).disabled=!selected.size);
+    const courses=data.courses.filter(c=>selected.has(c.id));
+    if(!courses.length){document.querySelector('#result-summary').textContent='Select at least one subject to review your timetable.';schedule.innerHTML='<div class="empty-state">Your timetable will appear here.</div>';return;}
+    const sittings=data.sittings.filter(s=>selected.has(s.courseId));
+    const pending=courses.filter(c=>!sittings.some(s=>s.courseId===c.id));
+    document.querySelector('#result-summary').textContent='';
+    const dates=[...new Set(sittings.map(s=>s.date))].sort();
+    const allDates=[...new Set(data.sittings.map(s=>s.date))].sort();
+    const weeks=[allDates.slice(0,5),allDates.slice(5,10),allDates.slice(10,15)];
+    const cards=(date,session)=>sittings.filter(s=>s.date===date&&s.session===session).map(s=>card(data.courses.find(c=>c.id===s.courseId),s)).join('')||'<p class="no-exam">-</p>';
+    const heading=date=>'<span>'+new Intl.DateTimeFormat('en-GB',{weekday:'short',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'))+'</span><strong>'+new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'))+'</strong>';
+    schedule.innerHTML=weeks.filter(w=>w.length).map((week,i)=>'<section class="exam-week"><h3 class="week-title">Week '+(i+1)+'</h3><div class="week-board desktop-board">'+week.map(d=>'<h4 class="day-heading">'+heading(d)+'</h4>').join('')+['AM','PM'].map(session=>'<div class="session-row-label '+(session==='AM'?'morning':'afternoon')+'">'+(session==='AM'?'Morning':'Afternoon')+'</div>'+week.map(d=>'<section class="session-cell">'+cards(d,session)+'</section>').join('')).join('')+'</div><div class="mobile-board">'+week.map(d=>'<section class="mobile-day"><h4 class="day-heading">'+heading(d)+'</h4>'+['AM','PM'].map(session=>'<div class="mobile-session"><h5 class="session-label">'+(session==='AM'?'Morning':'Afternoon')+'</h5>'+cards(d,session)+'</div>').join('')+'</section>').join('')+'</div></section>').join('')+(pending.length?'<section><h3>Schedule pending</h3><div class="pending-grid">'+pending.map(c=>card(c,null)).join('')+'</div></section>':'');
+
+    const clashes=[];
+    for(let i=0;i<sittings.length;i++)for(let j=i+1;j<sittings.length;j++){const a=sittings[i],b=sittings[j];if(a.date!==b.date||!a.releaseVerified||!b.releaseVerified)continue;if(minute(a.scheduledStart)-15<minute(b.release)&&minute(b.scheduledStart)-15<minute(a.release))clashes.push(`${a.date}: ${a.courseId} and ${b.courseId}`);}
+    document.querySelector('#conflict-panel').innerHTML=clashes.length?`<div class="conflict-warning"><strong>Possible supervised-session clash — ask the coordinator</strong>${clashes.map(esc).join('<br>')}</div>`:'';
+  }
+  root.addEventListener('change',e=>{const input=e.target.closest('input');if(!input)return;const course=data.courses.find(c=>c.id===input.value);if(input.checked){data.courses.filter(c=>c.name===course.name).forEach(c=>selected.delete(c.id));selected.add(course.id);}else selected.delete(course.id);choices();render();});
+  document.querySelector('#clear-selections').addEventListener('click',()=>{selected.clear();choices();render();});
+  document.querySelector('#view-schedule').addEventListener('click',()=>document.querySelector('#results').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+  document.querySelector('#print-schedule').addEventListener('click',()=>window.print());
+  window.examSchedule={validate,block,card};
+  try{validate();choices();render();}catch(error){document.querySelector('#result-summary').textContent='Schedule data validation failed. Review required.';schedule.textContent=error.message;}
+})();
+
+
+</script></body></html>
